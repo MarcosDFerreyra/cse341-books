@@ -9,11 +9,11 @@ app.get('/', (req, res) => {
    return res.status(200).json({ message: 'Server is running' });
 });
 
-app.get("/trails", async (req, res) => {
+app.get("/books", async (req, res) => {
    try {
       await getDb();
-      const trails = await getDb().collection('trails').find().toArray();
-      return res.status(200).json(trails);
+      const books = await getDb().collection('books').find().toArray();
+      return res.status(200).json(books);
    }
    catch (error) {
       console.log('Collection connection failed', error.message)
