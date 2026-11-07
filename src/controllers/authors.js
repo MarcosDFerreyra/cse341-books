@@ -90,7 +90,7 @@ const deleteAuthorHandler = async (req, res) => {
             console.log(`DELETE/authors/${id} failed: author not found`);
             return res.status(404).json({ error: `Author ${id} not found` });
         }
-        return res.status(200).json({ message: `Author ${id} was deleted`})
+        return res.status(204).json({ message: `Author ${id} was deleted`})
     }
     catch (error) {
         console.log(`DELETE/authors/${id} failed:`, error.message);

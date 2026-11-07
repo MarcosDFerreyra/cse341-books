@@ -51,6 +51,164 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Create a new book",
+        "tags": [
+          "Books"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "authorId",
+                  "title",
+                  "publicationDate"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "authorId": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "publicationDate": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              },
+              "example": {
+                "id": "b4",
+                "authorId": "a1",
+                "title": "The Silmarillion",
+                "publicationDate": "1977-09-15"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Book created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "authorId": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "publicationDate": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "b4",
+                  "authorId": "a1",
+                  "title": "The Silmarillion",
+                  "publicationDate": "1977-09-15"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields, invalid date, or the author does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "missingField": {
+                    "summary": "Missing field",
+                    "value": {
+                      "error": "Missing required field: title"
+                    }
+                  },
+                  "wrongType": {
+                    "summary": "Wrong type",
+                    "value": {
+                      "error": "Field title must be a string"
+                    }
+                  },
+                  "invalidDate": {
+                    "summary": "Invalid date format",
+                    "value": {
+                      "error": "publicationDate must use the format YYYY-MM-DD"
+                    }
+                  },
+                  "notRealDate": {
+                    "summary": "Date does not exist",
+                    "value": {
+                      "error": "publicationDate must be a real date"
+                    }
+                  },
+                  "authorNotFound": {
+                    "summary": "Author does not exist",
+                    "value": {
+                      "error": "Author with id a9 does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A book with that id already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "A book with id b1 already exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "internal server error"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/books/{id}": {
@@ -113,6 +271,245 @@
                 },
                 "example": {
                   "message": "internal server error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing book",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The custom id of the book to update",
+            "schema": {
+              "type": "string",
+              "example": "b4"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "authorId",
+                  "title",
+                  "publicationDate"
+                ],
+                "properties": {
+                  "authorId": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "publicationDate": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              },
+              "example": {
+                "authorId": "a1",
+                "title": "The Silmarillion (Second Edition)",
+                "publicationDate": "1999-10-01"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "authorId": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "publicationDate": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "b4",
+                  "authorId": "a1",
+                  "title": "The Silmarillion (Second Edition)",
+                  "publicationDate": "1999-10-01"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields, invalid date, or the author does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "missingField": {
+                    "summary": "Missing field",
+                    "value": {
+                      "error": "Missing required field: title"
+                    }
+                  },
+                  "wrongType": {
+                    "summary": "Wrong type",
+                    "value": {
+                      "error": "Field title must be a string"
+                    }
+                  },
+                  "invalidDate": {
+                    "summary": "Invalid date format",
+                    "value": {
+                      "error": "publicationDate must use the format YYYY-MM-DD"
+                    }
+                  },
+                  "notRealDate": {
+                    "summary": "Date does not exist",
+                    "value": {
+                      "error": "publicationDate must be a real date"
+                    }
+                  },
+                  "authorNotFound": {
+                    "summary": "Author does not exist",
+                    "value": {
+                      "error": "Author with id a9 does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Book with id b9 does not exist"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "internal server error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an existing book",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The custom id of the book to delete",
+            "schema": {
+              "type": "string",
+              "example": "b4"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Book with id b4 deleted successfully"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Book with id b9 does not exist"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "internal server error"
                 }
               }
             }
